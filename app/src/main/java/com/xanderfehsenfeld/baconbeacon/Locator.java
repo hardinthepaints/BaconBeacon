@@ -24,11 +24,13 @@ public class Locator implements GoogleApiClient.ConnectionCallbacks, GoogleApiCl
     public Locator( Context _context){
         buildGoogleApiClient( _context );
         context = _context;
-        //mGoogleApiClient.connect();
+        mGoogleApiClient.connect();
         updateLocation();
 
 
     }
+
+
 
     /* get the most current location */
     public Location updateLocation(){
@@ -49,6 +51,7 @@ public class Locator implements GoogleApiClient.ConnectionCallbacks, GoogleApiCl
     public void onConnected(Bundle bundle) {
         Toast toast = Toast.makeText(context, "gps connected!", Toast.LENGTH_LONG);
         toast.show();
+
     }
 
     @Override
@@ -58,6 +61,10 @@ public class Locator implements GoogleApiClient.ConnectionCallbacks, GoogleApiCl
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        try {
+            throw new Exception( "gps failed!" );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

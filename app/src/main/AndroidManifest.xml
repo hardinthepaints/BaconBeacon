@@ -24,6 +24,17 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+        <receiver android:name=".SendPing"
+            android:enabled="true"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+            </intent-filter>
+
+        </receiver>
     </application>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
 
 </manifest>
