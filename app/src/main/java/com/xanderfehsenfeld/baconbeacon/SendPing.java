@@ -34,6 +34,8 @@ public class SendPing extends BroadcastReceiver{
         System.out.println("SENDING GPS");
         locator = new Locator(context);
         locator.mGoogleApiClient.connect();
+        locator.updateLocation();
+
         System.out.println(locator.mLastLocation);
 
     }

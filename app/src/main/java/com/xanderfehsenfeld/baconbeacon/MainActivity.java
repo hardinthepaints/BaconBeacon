@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity  {
     private boolean bad = false;
     private String message;
     private Intent curr_intent;
+    private MyServiceConnection sc = new MyServiceConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity  {
         Intent i= new Intent(context, MyService.class);
         // potentially add data to the intent
         i.putExtra("KEY1", message);
-        //context.bindService(i, new MyServiceConnection(), Context.BIND_ABOVE_CLIENT);
+        context.bindService(i, sc, Context.BIND_ABOVE_CLIENT);
         context.startService(i);
 
         curr_intent = i;

@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.IInterface;
@@ -29,16 +30,15 @@ import java.util.TimerTask;
 //public class MyService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 public class MyService extends Service {
 
-    /* location */
-    //private GoogleApiClient mGoogleApiClient;
-    //private Location mLastLocation;
 
+    /* the message which will be sent to the server */
     String message;
 
     private PendingIntent pendingIntent;
     private AlarmManager manager;
-    //private Timer timer;
 
+    /* Binder object for this service */
+    private final IBinder mBinder = new LocalBinder();
 
 
     public MyService() {}
@@ -59,20 +59,12 @@ public class MyService extends Service {
         final Context c = getApplicationContext();
         Toast toast = Toast.makeText(c, "service started!", Toast.LENGTH_SHORT);
         toast.show();
-//        buildGoogleApiClient();
-//        mGoogleApiClient.connect();
-//        locator = new Locator(this);
-//        locator.mGoogleApiClient.connect();
+
 
         Bundle extras = intent.getExtras();
         message = (String) extras.get("KEY1");
 
-        //locator.updateLocation();
-        //getCoordinates();
-        //String message = String.valueOf(R.string.message);
-
         /* start alarm to periodically update location & contact server */
-
         final Intent alarmIntent = new Intent(c, SendPing.class);
         pendingIntent = PendingIntent.getBroadcast(c, 0, alarmIntent, 0);
         manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
@@ -86,67 +78,31 @@ public class MyService extends Service {
 
         Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 
-        /* use a timer for a repeated task */
-//        timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                c.startService( alarmIntent );
-//            }
-//        },
-//        0, 1000
-//        );
-
-
-
         return Service.START_NOT_STICKY;
     }
-
-//    private void getCoordinates(){
-//        //Location curr_location = locator.updateLocation();
-//        if ( curr_location != null ) {
-//            System.out.println( "latitude: " + curr_location.getLatitude());
-//            System.out.println( "longitude: " + curr_location.getLongitude());
-//        }
-//
-//        //Context c = getApplicationContext();
-//        //TextView latitude =
-//
-//    }
-
 
     @Override
     public IBinder onBind(Intent intent) {
         Toast toast = Toast.makeText(getApplicationContext(), "service bound!", Toast.LENGTH_SHORT);
         toast.show();
 
+        return mBinder;
+
         // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
 
     }
 
-//    /* build a googleApiClient */
-//    protected synchronized void buildGoogleApiClient() {
-//        mGoogleApiClient = new GoogleApiClient.Builder( this )
-//                .addConnectionCallbacks( this )
-//                .addOnConnectionFailedListener( this )
-//                .addApi( LocationServices.API )
-//                .build();
-//    }
-//
-//
-//    @Override
-//    public void onConnected(Bundle bundle) {
-//
-//    }
-//
-//    @Override
-//    public void onConnectionSuspended(int i) {
-//
-//    }
-//
-//    @Override
-//    public void onConnectionFailed(ConnectionResult connectionResult) {
-//
-//    }
+    /**
+     * Class for clients to access.  Because we know this service always
+     * runs in the same process as its clients, we don't need to deal with
+     * IPC.
+     */
+    public class LocalBinder extends Binder {
+        MyService getService() {
+            return MyService.this;
+        }
+    }
+
+
 }
