@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         message = getResources().getString(R.string.good_message);
 
         /* start the service */
-        startService();
+        start();
 
 
     }
@@ -49,13 +50,15 @@ public class MainActivity extends AppCompatActivity {
         stopService();
 
         /* start the new service */
-        startService();
+        start();
     }
 
     private void stopService(){
         getApplicationContext().stopService(curr_intent);
+        Toast toast = Toast.makeText(getApplicationContext(), "service stopped!", Toast.LENGTH_SHORT);
+        toast.show();
     }
-    private void startService(){
+    private void start(){
         // use this to start and trigger a service
         Context context = getApplicationContext();
         Intent i= new Intent(context, MyService.class);

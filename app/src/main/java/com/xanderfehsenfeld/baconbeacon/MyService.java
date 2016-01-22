@@ -53,7 +53,7 @@ public class MyService extends Service {
         locator.mGoogleApiClient.connect();
 
         Bundle extras = intent.getExtras();
-        System.out.println( (String) extras.get("KEY1"));
+        message = (String) extras.get("KEY1");
 
         //locator.updateLocation();
         getCoordinates();
